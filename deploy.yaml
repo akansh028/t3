@@ -22,7 +22,7 @@ spec:
             mountPath: /var/www/html/
         volumeMounts:
           - name: log-vol
-            mountPath: /var/log/httpd
+            mountPath: /var/www/html
       volumes:
       - name: httpd-vol
         persistentVolumeClaim:
