@@ -1,48 +1,33 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: php-webserver
-  labels:
-    app: php-webserver
-spec:
-  ports:
-    - port: 80
-      nodePort: 30002
-  selector:
-    app: php-webserver
-    tier: frontend
-  type: NodePort
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: php-webserver
-  labels:
-    app: php-webserver
+  name: php-dep
 spec:
   selector:
     matchLabels:
-      app: php-webserver
-      tier: frontend
-  strategy:
-    type: Recreate
+      env: production
+  replicas: 1
   template:
     metadata:
       labels:
-        app: php-webserver
-        tier: frontend
+        env: production
     spec:
       containers:
-      - image: akansh028/apache-webserver-php
-        name: php-webserver
+      - name: php
+        image: akansh028/jen-k8s:latest
         ports:
         - containerPort: 80
-          name: php-webserver
         volumeMounts:
-        - name: php-webserver-persistent-storage
-          mountPath: /var/www/html/
+          - name: httpd-vol
+            mountPath: /var/www/html/
+        volumeMounts:
+          - name: log-vol
+            mountPath: /var/log/httpd
       volumes:
-      - name: php-webserver-persistent-storage
+      - name: httpd-vol
         persistentVolumeClaim:
-          claimName: php-pv-claim
+          claimName: web-pvc
+      volumes:
+      - name: log-vol
+        persistentVolumeClaim:
+          claimName: log-pvc
