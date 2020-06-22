@@ -17,10 +17,10 @@ spec:
         image: akansh028/jen-k8s:latest
         ports:
         - containerPort: 80
+       
         volumeMounts:
-          - name: httpd-vol
-            mountPath: /var/www/html/
-
+          - name: log-vol
+            mountPath: /var/www/html
       volumes:
       - name: httpd-vol
         persistentVolumeClaim:
