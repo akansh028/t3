@@ -1,13 +1,29 @@
-
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: php-pv-claim
+  name: web-pvc
   labels:
-    app: php-webserver
+    env: production
 spec:
   accessModes:
-    - ReadWriteOnce
-  resources:
+   - ReadWriteMany
+  resources:  
     requests:
-      storage: 100Mi
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: log-pvc
+  labels:
+    env: production
+spec:
+  accessModes:
+   - ReadWriteMany
+  resources:  
+    requests:
+      storage: 1Gi
+
+---
